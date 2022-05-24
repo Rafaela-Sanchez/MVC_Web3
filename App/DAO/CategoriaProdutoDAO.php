@@ -1,7 +1,7 @@
 <?php
 
-class ProdutoDAO
-{
+class CategoriaProdutoDAO{
+
     private $conexao;
 
     function __construct() 
@@ -12,24 +12,23 @@ class ProdutoDAO
         $this->conexao = new PDO($dsn, $user, $pass);
     }
 
-    function insert(ProdutoModel $model) 
+    function insert(CategoriaProdutoModel $model) 
     {
-        $sql = "INSERT INTO produto 
-                (nome, preco, descricao) 
-                VALUES (?, ?, ?)";
+        $sql = "INSERT INTO categoria 
+                (nome_cat, descricao) 
+                VALUES (?, ?)";
         
         $stmt = $this->conexao->prepare($sql);
     
-        $stmt->bindValue(1, $model->nomeproduto);
-        $stmt->bindValue(2, $model->preco);
-        $stmt->bindValue(3, $model->descricao);
+        $stmt->bindValue(1, $model->nomecategoria);
+        $stmt->bindValue(2, $model->descricao);
 
         $stmt->execute();      
     }
 
     public function getAllRows()
     {
-        $sql = "SELECT * FROM produto ";
+        $sql = "SELECT * FROM categoria ";
 
         $stmt = $this->conexao->prepare($sql);
         $stmt->execute();
@@ -37,35 +36,33 @@ class ProdutoDAO
         return $stmt->fetchAll(PDO::FETCH_CLASS); 
     }
 
-
-    public function update(ProdutoModel $model)
+    public function update(CategoriaProdutoModel $model)
     {
-        $sql = "UPDATE produto SET nomeproduto=?, preco=?, descricao=?, WHERE id=?";
+        $sql = "UPDATE categoria SET nomecategoria=?, descricao=?, WHERE id=?";
 
         $stmt = $this->conexao->prepare($sql);
-        $stmt->bindValue(1, $model->nomeproduto);
-        $stmt->bindValue(2, $model->preco);
-        $stmt->bindValue(3, $model->descricao);
-        $stmt->bindValue(4, $model->id);
+        $stmt->bindValue(1, $model->nomecategoria);
+        $stmt->bindValue(2, $model->descricao);
+        $stmt->bindValue(3, $model->id);
         $stmt->execute();
     }
 
     public function selectById(int $id)
     {
-        include_once 'Model/ProdutoModel.php';
+        include_once 'Model/CategoriaProdutoModel.php';
 
-        $sql = "SELECT * FROM produto WHERE id = ?";
+        $sql = "SELECT * FROM categoria WHERE id = ?";
 
         $stmt = $this->conexao->prepare($sql);
         $stmt->bindValue(1, $id);
         $stmt->execute();
 
-        return $stmt->fetchObject("ProdutoModel");
+        return $stmt->fetchObject("CategoriaProdutoModel");
     }
 
     public function delete(int $id)
     {
-        $sql = "DELETE FROM produto WHERE id = ? ";
+        $sql = "DELETE FROM categoria WHERE id = ? ";
 
         $stmt = $this->conexao->prepare($sql);
         $stmt->bindValue(1, $id);

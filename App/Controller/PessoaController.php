@@ -1,45 +1,45 @@
 <?php
 
 /**
- * Classes Controller são responsáveis por processar as requisições do usuário.
- * Isso significa que toda vez que um usuário chama uma rota, um método (função)
- * de uma classe Controller é chamado.
- * O método poderá devolver uma View (fazendo um include), acessar uma Model (para
- * buscar algo no banco de dados), redirecionar o usuário de rota, ou mesmo,
- * chamar outra Controller.
+ * Classes Controller processam as requisições do usuário.
+ * Se um usuário chama uma rota, um método (função) de uma classe Controller é chamado.
+ * O método pode devolver uma View ou acessar uma Model, redirecionando o usuário de rota 
+ * ou chamar outra Controller.
  */
+
 class PessoaController 
 {
-    /**
-     * Os métodos index serão usados para devolver uma View.
-     */
+    
+     // O index (método) devolve uma View.
+
     public static function index() 
     {
         include 'Model/PessoaModel.php'; // inclusão do arquivo model.
         
-        $model = new PessoaModel(); // Instância da Model
-        $model->getAllRows(); // Obtendo todos os registros, abastecendo a propriedade $rows da model.
+        $model = new PessoaModel(); //Instância da Model
+        $model->getAllRows();       //Obtendo todos os registros, abastecendo a propriedade $rows da model.
 
-        include 'View/modules/Pessoa/ListaPessoas.php'; // Include da View, propriedade $rows da Model pode ser acessada na View
+        include 'View/modules/Pessoa/ListaPessoas.php'; 
+        // Include da View, propriedade $rows da Model pode ser acessada na View
     }
 
   
-    //Devolve uma View contendo um formulário para o usuário.
+    //Devolve uma View com um formulário.
 
     public static function form()
     {
         include 'View/modules/Pessoa/FormPessoa.php';
     }
 
-    /**
-     * Preenche um Model para que seja enviado ao banco de dados para salvar.
-     */
+     //Preenche um Model para enviar ao banco de dados e salvar.
+     
     public static function save() {
 
-        include 'Model/PessoaModel.php'; // inclusão do arquivo model.
+        include 'Model/PessoaModel.php';
 
-        // Abaixo cada propriedade do objeto sendo abastecida com os dados informados
+        // Propriedades do objeto sendo abastecida com os dados informados
         // pelo usuário no formulário (note o envio via POST)
+
         $pessoa = new PessoaModel();
         $pessoa->nome = $_POST['nome'];
         $pessoa->rg = $_POST['rg'];
@@ -54,17 +54,16 @@ class PessoaController
         header("Location: /pessoa"); // redirecionando o usuário para outra rota.
     }
 
-    /**
-     * Método para tratar a rota delete. 
-     */
+    // Método para tratar a rota delete. 
+
     public static function delete()
     {
-        include 'Model/PessoaModel.php'; // inclusão do arquivo model.
+        include 'Model/PessoaModel.php';
 
         $model = new PessoaModel();
 
         $model->delete( (int) $_GET['id'] ); // Enviando a variável $_GET como inteiro para o método delete
 
-        header("Location: /pessoa"); // redirecionando o usuário para outra rota.
+        header("Location: /pessoa");         //redirecionando o usuário para outra rota.
     }
 }

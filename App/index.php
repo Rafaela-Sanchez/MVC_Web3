@@ -7,9 +7,13 @@ $uri_parse = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
 include 'Controller/PessoaController.php';
 include 'Controller/ProdutoController.php';
+include 'Controller/CategoriaProdutoController.php';
 
 switch($uri_parse)
 {
+
+    //PESSOAS 
+
     case '/pessoa':
         PessoaController::index();
     break;
@@ -21,33 +25,39 @@ switch($uri_parse)
     case '/pessoa/save':
         PessoaController::save();
     break;
+
+    case '/pessoa/delete':
+        PessoaController::delete();
+    break;
     
-    
+    // PRODUTOS
     
     case '/produto/formulario':
         ProdutoController::form();
-    break;
-
-    case '/processa':
-        ProdutoController::save();
     break;
 
     case '/produto':
         ProdutoController::index();
     break;
 
-    case '/produto/ver':
-        echo "ver detalhes de produto";
-    break;
-
     case '/produto/delete':
-        echo "remover produto";
+       ProdutoController::delete();
     break;
 
     case '/produto/save':
         ProdutoController::save();
     break;
 
+    //CATEGORIA
+
+    case '/categoria/form':
+        CategoriaProdutoController::form();
+    break;
+
+    case '/categoria/save':
+        CategoriaProdutoController::save();
+    break;
+    
     default:
         echo "erro 404";
     break;

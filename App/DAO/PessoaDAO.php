@@ -1,14 +1,16 @@
 <?php
+
 /**
- * As classes DAO (Data Access Object) são responsáveis por executar os
- * SQL junto ao banco de dados.
+ * As classes DAO (Data Access Object) executam os SQL junto ao banco de dados.
  */
+
 class PessoaDAO
 {
     /**
      * Atributo (ou Propriedade) da classe destinado a armazenar o link (vínculo aberto)
      * de conexão com o banco de dados.
      */
+
     private $conexao;
 
 
@@ -20,6 +22,7 @@ class PessoaDAO
      * A conexão é aberta via PDO (PHP Data Object) que é um recurso da linguagem para
      * acesso a diversos SGBDs.
      */
+
     function __construct() 
     {
         // DSN (Data Source Name) onde o servidor MySQL será encontrado
@@ -34,8 +37,9 @@ class PessoaDAO
 
     /**
      * Método que recebe um model e extrai os dados do model para realizar o insert
-     * na tabela correspondente ao model. Note o tipo do parâmetro declarado.
+     * na tabela correspondente ao model.
      */
+
     function insert(PessoaModel $model) 
     {
         // Trecho de código SQL com marcadores ? para substituição posterior, no prepare   
@@ -44,8 +48,8 @@ class PessoaDAO
                 VALUES (?, ?, ?, ?, ?, ?, ?)";
         
         /** 
-         * Declaração da variável stmt que conterá a montagem da consulta. Observe que
-         * estamos acessando o método prepare dentro da propriedade que guarda a conexão
+         * Variável stmt: montagem da consulta. 
+         * Observe que estamos acessando o método prepare dentro da propriedade que guarda a conexão
          * com o MySQL, via operador seta "->". Isso significa que o prepare "está dentro"
          *  da propriedade $conexao e recebe nossa string sql com os devidor marcadores.
          */
@@ -53,8 +57,8 @@ class PessoaDAO
         $stmt = $this->conexao->prepare($sql);
 
         /** 
-         * Nesta etapa os bindValue são responsáveis por receber um valor e trocar em uma 
-         * determinada posição, ou seja, o valor que está em 3, será trocado pelo terceiro ?
+         * bindValue: recebem um valor e troca em uma determinada posição
+         * Ex: o valor que está em 3, será trocado pelo terceiro ?
          * No que o bindValue está recebendo o model que veio via parâmetro e acessamos
          * via seta qual dado do model queremos pegar para a posição em questão.
         */
@@ -67,7 +71,7 @@ class PessoaDAO
         $stmt->bindValue(6, $model->telefone);
         $stmt->bindValue(7, $model->endereco);
         
-        // Ao fim, onde todo SQL está montando, executamos a consulta.
+        // Executamos a consulta.
         $stmt->execute();      
     }
 
@@ -96,12 +100,7 @@ class PessoaDAO
 
         /**  Retornando todas as linhas obtidas na consulta.
          * É retornado um array associativo, uma estrutura
-         * chave-valor, por exemplo:
-         * array( 
-         *         array('id' => 1, 'nome' => 'Rapha'), 
-         *         array('id' => 3, 'nome' => 'Portugal') 
-         *       )
-         * 
+         * chave-valor
         */
     }
 
@@ -112,8 +111,9 @@ class PessoaDAO
         $stmt = $this->conexao->prepare($sql);
         $stmt->execute();
 
-        // Retorna um array com as linhas retornadas da consulta. Observe que
-        // o array é um array de objetos. Os objetos são do tipo stdClass e 
+        // Retorna um array com as linhas retornadas da consulta.
+        // É um array de objetos. 
+        // Os objetos são do tipo stdClass e 
         // foram criados automaticamente pelo método fetchAll do PDO.
 
         return $stmt->fetchAll(PDO::FETCH_CLASS);        
